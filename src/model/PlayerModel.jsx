@@ -1,5 +1,5 @@
 
-class Player {
+class PlayerModel {
     constructor(playerNum,id) {
         this.id = id;
         this.playerNum = playerNum;
@@ -20,4 +20,4 @@ class Player {
     }
 }
 
-export default CarModel;
+export default PlayerModel;
