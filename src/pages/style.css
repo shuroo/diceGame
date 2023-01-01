@@ -1,0 +1,59 @@
+.wrapper {
+    background-color: gainsboro;
+    color: black;
+}
+
+button {
+    position: fixed;
+    padding: 12px;
+    background-color: transparent;
+    width: 125px;
+    border: 1px solid wheat;
+}
+
+button * {
+    margin: auto;
+    float: left;
+}
+
+.hold {
+    bottom: 30%;
+    right: 46%;
+}
+
+.roll-dice {
+    bottom: 40%;
+    right: 46%;
+}
+
+.bi.bi-plus-circle,
+.glyphicon-refresh {
+    color: red;
+}
+
+.newGameButton {
+    top: 10%;
+    right: 46%;
+}
+
+.destScore {
+    position: fixed;
+    padding: 12px;
+    background-color: transparent;
+    width: 100px;
+    border: 1px solid wheat;
+    bottom: 20%;
+    text-align: center;
+    right: 46%;
+}
+
+body {
+    text-align: center;
+    color: black;
+    background-image: linear-gradient(to gray, lightgray);
+    font: 100% Lato, Arial, Sans Serif;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}

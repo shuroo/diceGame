@@ -1,0 +1,52 @@
+.playerClass {
+    display: inline-block;
+    margin-top: 2%;
+    color: black;
+    width: 40vw;
+    border: 1px solid white;
+    height: 80vh;
+    font-size: 28px;
+    background-color: whitesmoke;
+}
+
+.playerBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+    height: 100%;
+    margin: auto;
+}
+
+.playerBody>* {
+    justify-self: center;
+    margin: auto;
+}
+
+.footerBox {
+    background-color: red;
+    padding: 7px 10px;
+    height: 100px;
+    font-size: 70%;
+}
+
+.footerBox span {
+    color: white;
+}
+
+.card-title {
+    align-self: flex-start;
+    margin-bottom: 1px;
+}
+
+.totalScore {
+    margin-top: 0px;
+    padding-bottom: 10px;
+    color: lightpink;
+    font-size: 200%;
+}
+
+.destStyle {
+    border: 1px solid gray;
+}
