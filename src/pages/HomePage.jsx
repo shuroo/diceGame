@@ -1,5 +1,5 @@
  
-import React, { Component,useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import Glyphicon from '@strongdm/glyphicon';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -28,8 +28,10 @@ function HomePage(){
       }
 
     function rollDice(){
-      let randValue = Math.floor(Math.random() * 10) + 2;
-      if (randValue == 12){
+      // Rand a value between 2 and 12
+      let randValue = Math.floor(Math.random() * 11) + 2;
+      if (randValue === 12){
+        players[turn-1].setCurrentScore(0)
         setTurn(3-turn);
       }
       else{
@@ -97,8 +99,8 @@ function HomePage(){
     }
 
     function resetImages(){
-          setDice1(null);
-          setDice2(null);  
+          setDice1("empty-dice.png");
+          setDice2("empty-dice.png");  
     }
 
     function resetCurrentScore(player){
@@ -106,13 +108,13 @@ function HomePage(){
     }
 
     function hold(){
-      let current = players[turn-1].currentScore
-      let totalScore = players[turn-1].totalScore
-      players[turn-1].setTotalScore(totalScore+current);
-      resetCurrentScore(players[turn-1]);
-      setTurn(3-turn);
-      resetImages();
-      checkIsWon();
+        let current = players[turn-1].currentScore
+        let totalScore = players[turn-1].totalScore
+        players[turn-1].setTotalScore(totalScore+current);
+        resetCurrentScore(players[turn-1]);
+        setTurn(3-turn);
+        resetImages();
+        checkIsWon();
     }
 
     function checkIsWon(){
@@ -122,10 +124,9 @@ function HomePage(){
       }
     }
        
-    useEffect(()=>{ checkIsWon()
+    // useEffect(()=>{ checkIsWon()},[players]);
     
-    },[players]);
-    const wonAlert = ((won != null)?<Alert className="info alertBox">Player {turn} Won!</Alert> : null);
+     const wonAlert = ((won != null)?<Alert className="info alertBox">Player {won} Won!</Alert> : null);
 
 return (
     <Container className="wrapper">
@@ -138,15 +139,15 @@ return (
   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
 </svg> NEW GAME</Button>
 <Container className="dice"><img src={dice1} alt=""/><img src={dice2} alt=""/></Container>
-<Button onClick={rollDice} className='roll-dice'>
+<Button disabled={won != null} onClick={rollDice} className='roll-dice'>
 <Glyphicon glyph='glyphicon glyphicon-refresh' /> ROLL DICE</Button>
-<Button onClick={hold} className='hold'>
+<Button disabled={won != null} onClick={hold} className='hold'>
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" className="bi bi-arrow-down-square" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 2.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
 </svg>
   HOLD</Button>
   <Form.Control className="destScore" type="text" placeholder="FINAL SCORE" 
-  onChange={e => setDestScore(e.target)}/>
+  onChange={e => setDestScore(e.target.value)}/>
 <Player playerNum={players[1].playerNum} bgColor={players[1].bgColor} currentScore={players[1].currentScore} 
 totalScore ={players[1].totalScore} id={players[1].totalScore} />
 </Container>
