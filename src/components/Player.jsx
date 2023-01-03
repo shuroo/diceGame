@@ -2,6 +2,12 @@ import { Row,Col, Container } from "react-bootstrap"
 import Card from 'react-bootstrap/Card';
 import "./player.css"
 
+/**
+ * Component to represent a single player 
+ * ( the background color is changed to light gray when the player is currently playing )
+ * @param {*} param0 
+ * @returns 
+ */
 
 function Player({playerNum,currentScore,totalScore,bgColor,id}) {
   return (

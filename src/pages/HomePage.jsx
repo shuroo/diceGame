@@ -1,39 +1,59 @@
- 
-import React, { useState } from 'react';
+
+// Dice Game - By Shiri Rave.
+
+import React, { useState, useEffect } from 'react';
 import Glyphicon from '@strongdm/glyphicon';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Alert from 'react-bootstrap/Alert';
 import PlayerModel from '../model/PlayerModel';
-import './style.css';
+import './HomePage.css';
 import Player from '../components/Player';
 import { Button } from 'react-bootstrap';
 
+/**
+ * Main Game Page
+ */
 function HomePage(){
+
+    // Set the following params to save states:
 
     const [won,setWon] =  useState(null);
     const [dice1,setDice1] =  useState(null);
     const [dice2,setDice2] =  useState(null); 
+
+    // Default score destination ( when not overriden )
     const [destScore, setDestScore] = useState([
         100
     ])
+
+    // Set The first turn to player1 by default
     const [turn, setTurn] = useState([
       1
     ])
+
+    // Init the players by setting the players model array.
     const [players] = useState([
       new PlayerModel(1,"Player1"),new PlayerModel(2,"Player2")
   ])
+
+    // Start a new game by reloading the page
     function refreshPage() {
         window.location.reload(false);
       }
 
+    // Function to stimulate rolling a dice 
+    // and fit it's result to the dice display
     function rollDice(){
       // Rand a value between 2 and 12
       let randValue = Math.floor(Math.random() * 11) + 2;
+      // If the result is double 6, 
+      // Erase the current round's score and pass the turn.
       if (randValue === 12){
         players[turn-1].setCurrentScore(0)
         setTurn(3-turn);
       }
+      // Else, keep saving the current round's score and play again.
       else{
         players[turn-1].setBGColor("whitesmoke")
         let prevCurrentScore = players[turn-1].currentScore
@@ -42,10 +62,16 @@ function HomePage(){
        
       }
 
+      // Set the dice display by the current dices random value.
       setDiceImages(randValue);
 
     }
 
+    /** 
+     * 
+     * Method to display the dices by a given numeric value. 
+     * 
+     * */
     function setDiceImages(numericValue){
 
       switch (numericValue) {
@@ -98,15 +124,28 @@ function HomePage(){
       }
     }
 
+    /**
+     * Method to reset the dice images when not rolling the dice (for example, when done)
+     */
     function resetImages(){
-          setDice1("empty-dice.png");
-          setDice2("empty-dice.png");  
+          let emptyDice = "empty-dice.png"
+          setDice1(emptyDice);
+          setDice2(emptyDice);  
     }
 
+    /**
+     * Method to reset the current score for a given player
+     * @param {*} player 
+     */
     function resetCurrentScore(player){
       player.setCurrentScore(0);
     }
 
+    /**
+     * Method for operating the 'hold' button - 
+     * When pressed, the current score updates the total score
+     * And the turn is passed.
+     */
     function hold(){
         let current = players[turn-1].currentScore
         let totalScore = players[turn-1].totalScore
@@ -114,19 +153,34 @@ function HomePage(){
         resetCurrentScore(players[turn-1]);
         setTurn(3-turn);
         resetImages();
-        checkIsWon();
     }
 
+    /**
+     * On (almost) every update ( especially when the players and changed or the score destination is changed ) - 
+     * Check to see if we have a winner.
+     */
     function checkIsWon(){
-      let isWon = true === (players[turn-1].totalScore >= destScore)
-      if (isWon){
-        setWon(turn)
+      if( true === (players[0].totalScore >= destScore)){
+        setWon(1)
+      }
+      else if( true === (players[1].totalScore >= destScore)){
+        setWon(2)
+      }
+    }
+
+    /**
+     * Set the destination score - when the text input has at least to digits.
+     * @param {*} destScore 
+     */
+    function changeDestScore(destScore){
+      if (destScore.length >= 2){
+        setDestScore(destScore)
       }
     }
        
-    // useEffect(()=>{ checkIsWon()},[players]);
+    useEffect(()=>{ checkIsWon()},);
     
-     const wonAlert = ((won != null)?<Alert className="info alertBox">Player {won} Won!</Alert> : null);
+     const wonAlert = ((won != null)?<Alert className="alertBox">Player {won} Won!</Alert> : null);
 
 return (
     <Container className="wrapper">
@@ -146,8 +200,8 @@ return (
   <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 2.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
 </svg>
   HOLD</Button>
-  <Form.Control className="destScore" type="text" placeholder="FINAL SCORE" 
-  onChange={e => setDestScore(e.target.value)}/>
+  <Form.Control className="destScore" type="number" placeholder="FINAL SCORE" 
+  onChange={e => changeDestScore(e.target.value)}/>
 <Player playerNum={players[1].playerNum} bgColor={players[1].bgColor} currentScore={players[1].currentScore} 
 totalScore ={players[1].totalScore} id={players[1].totalScore} />
 </Container>
